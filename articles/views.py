@@ -3,6 +3,8 @@ from rest_framework import generics
 # Create your views here.
 from .models import Category, Article
 from articles import serializers
+from rest_framework.permissions import IsAuthenticated
+from users.permissions import isBlogAdmin, isQA
 
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
@@ -21,6 +23,7 @@ class CategoryEditView(generics.RetrieveUpdateDestroyAPIView):
 class ArticleListView(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = serializers.ArticlewithCategorySerializer
+    permission_classes = [isQA|isBlogAdmin]
 
 
 class ArticleCreateView(generics.CreateAPIView):
